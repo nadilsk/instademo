@@ -1,14 +1,512 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Instagram</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Grand+Hotel&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-page: #fafafa;
+            --bg-card: #ffffff;
+            --border-color: #dbdbdb;
+            --text-primary: #000000;
+            --text-secondary: #737373;
+            --btn-primary: #0095f6;
+            --like-red: #ed4956;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-primary);
+            padding-bottom: 40px;
+        }
+
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: white;
+            border-bottom: 1px solid var(--border-color);
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            padding: 0 16px;
+        }
+
+        .nav-container {
+            width: 100%;
+            max-width: 935px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand-logo {
+            font-family: 'Grand Hotel', cursive;
+            font-size: 32px;
+            color: black;
+            text-decoration: none;
+        }
+
+        .nav-user {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+        }
+
+        .nav-user a {
+            text-decoration: none;
+        }
+
+        .add-post-btn {
+            background: var(--btn-primary);
+            color: white;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .user-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .feed-container {
+            width: 100%;
+            max-width: 470px;
+            margin: 24px auto 0;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .post-card {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .post-header {
+            padding: 12px 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .post-avatar-ring {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            padding: 2px;
+            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+        }
+
+        .post-avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: #efefef;
+            border: 2px solid white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .post-author {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .post-media {
+            width: 100%;
+            background: black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .post-media img,
+        .post-media video {
+            width: 100%;
+            max-height: 585px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .post-actions {
+            padding: 10px 14px 6px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            color: black;
+        }
+
+        .action-btn:active {
+            transform: scale(0.9);
+        }
+
+        .like-btn.liked svg {
+            fill: var(--like-red);
+            stroke: var(--like-red);
+        }
+
+        .likes-count {
+            padding: 0 14px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .post-caption {
+            padding: 0 14px 8px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .post-caption strong {
+            font-weight: 600;
+            margin-right: 4px;
+        }
+
+        .comments-list {
+            padding: 0 14px 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            font-size: 14px;
+        }
+
+        .comment-item {
+            line-height: 1.4;
+            overflow-wrap: anywhere;
+        }
+
+        .comment-item strong {
+            margin-right: 5px;
+        }
+
+        .no-comments {
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
+
+        .comment-form {
+            border-top: 1px solid #efefef;
+            padding: 12px 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .comment-input {
+            flex: 1;
+            width: 100%;
+            border: none;
+            outline: none;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .comment-submit {
+            background: none;
+            border: none;
+            color: var(--btn-primary);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .empty-state {
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 48px 20px;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        @media (max-width: 500px) {
+            .feed-container {
+                margin-top: 0;
+                gap: 12px;
+            }
+
+            .post-card {
+                border-left: none;
+                border-right: none;
+                border-radius: 0;
+            }
+
+            .nav-user {
+                gap: 8px;
+                font-size: 12px;
+            }
+        }
+    </style>
 </head>
+
 <body>
-    Home
-    <header>
-        <p>{{ request.user.first_name }}</p>
-    </header>
+
+<header class="navbar">
+    <div class="nav-container">
+
+        <a href="/home/" class="brand-logo">Instagram</a>
+
+        <div class="nav-user">
+
+            {% if request.user.is_authenticated %}
+
+                <a href="/add-post/" class="add-post-btn">
+                    + Add Post
+                </a>
+
+                <div class="user-avatar">
+                    {{ request.user.first_name|default:request.user.username|slice:":1" }}
+                </div>
+
+                <span>
+                    Welcome, {{ request.user.first_name|default:request.user.username }}
+                </span>
+
+                <a href="/logout/">Logout</a>
+
+            {% else %}
+
+                <a href="/login/">Login</a>
+                <a href="/register/">Sign up</a>
+
+            {% endif %}
+
+        </div>
+    </div>
+</header>
+
+
+<main class="feed-container">
+
+    {% for post in posts %}
+
+        <article class="post-card">
+
+            <!-- Post Header -->
+            <div class="post-header">
+
+                <div class="post-avatar-ring">
+                    <div class="post-avatar">
+                        {{ post.user.username|default:post.title|slice:":1" }}
+                    </div>
+                </div>
+
+                <span class="post-author">
+                    {{ post.user.username|default:"instagram_user" }}
+                </span>
+
+            </div>
+
+
+            <!-- Post Media -->
+            <div class="post-media">
+
+                {% if post.is_image %}
+
+                    {% if post.image %}
+                        <img src="{{ post.image.url }}" alt="{{ post.title }}">
+                    {% else %}
+                        <p style="color:white;">No image available</p>
+                    {% endif %}
+
+                {% else %}
+
+                    {% if post.video %}
+                        <video controls>
+                            <source src="{{ post.video.url }}">
+                            Your browser does not support video.
+                        </video>
+                    {% else %}
+                        <p style="color:white;">No video available</p>
+                    {% endif %}
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- Like Button -->
+            <div class="post-actions">
+
+                {% if request.user.is_authenticated %}
+
+                    <form method="POST" action="{% url 'like_post' post.id %}">
+                        {% csrf_token %}
+
+                        <button type="submit"
+                                class="action-btn like-btn {% if post.is_liked %}liked{% endif %}"
+                                aria-label="Like">
+
+                            <svg width="24" height="24"
+                                 viewBox="0 0 24 24"
+                                 fill="{% if post.is_liked %}#ed4956{% else %}none{% endif %}"
+                                 stroke="{% if post.is_liked %}#ed4956{% else %}currentColor{% endif %}"
+                                 stroke-width="2"
+                                 stroke-linecap="round"
+                                 stroke-linejoin="round">
+
+                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+
+                            </svg>
+
+                        </button>
+                    </form>
+
+                {% endif %}
+
+                <button type="button"
+                        class="action-btn"
+                        onclick="focusComment(this)"
+                        aria-label="Comment">
+
+                    <svg width="24" height="24"
+                         viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="2"
+                         stroke-linecap="round"
+                         stroke-linejoin="round">
+
+                        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+
+                    </svg>
+
+                </button>
+
+            </div>
+
+
+            <!-- Likes Count -->
+            <div class="likes-count">
+                {{ post.like_count }} likes
+            </div>
+
+
+            <!-- Caption -->
+            <div class="post-caption">
+                <strong>{{ post.user.username|default:"instagram_user" }}</strong>
+                <span>{{ post.description }}</span>
+            </div>
+
+
+            <!-- Comments -->
+            <div class="comments-list">
+
+                {% for comment in post.comment_list %}
+
+                    <div class="comment-item">
+                        <strong>{{ comment.user.username }}</strong>
+                        <span>{{ comment.comment }}</span>
+                    </div>
+
+                {% empty %}
+
+                    <p class="no-comments">No comments yet.</p>
+
+                {% endfor %}
+
+            </div>
+
+
+            <!-- Add Comment -->
+            {% if request.user.is_authenticated %}
+
+                <form class="comment-form"
+                      method="POST"
+                      action="{% url 'add_comment' post.id %}">
+
+                    {% csrf_token %}
+
+                    <input type="text"
+                           name="comment"
+                           class="comment-input"
+                           placeholder="Add a comment..."
+                           required>
+
+                    <button type="submit" class="comment-submit">
+                        Post
+                    </button>
+
+                </form>
+
+            {% else %}
+
+                <p style="padding: 10px 14px;">
+                    <a href="/login/">Login</a> to comment.
+                </p>
+
+            {% endif %}
+
+        </article>
+
+    {% empty %}
+
+        <div class="empty-state">
+            <p>No posts available yet.</p>
+            <br>
+
+            {% if request.user.is_authenticated %}
+                <a href="/add-post/">Create your first post</a>
+            {% endif %}
+        </div>
+
+    {% endfor %}
+
+</main>
+
+
+<script>
+    function focusComment(btn) {
+        const card = btn.closest('.post-card');
+        const input = card.querySelector('.comment-input');
+
+        if (input) {
+            input.focus();
+        }
+    }
+</script>
+
 </body>
 </html>

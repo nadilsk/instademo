@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+   
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <input type="text" name="title" placeholder="Title" required>
+
+    <input type="text" name="description" placeholder="Description" required>
+
+    <p>Select post type:</p>
+
+    <label>
+        <input type="radio" name="is_image" value="True" required onchange="showUpload()">
+        Image
+    </label>
+
+    <label>
+        <input type="radio" name="is_image" value="False" onchange="showUpload()">
+        Video
+    </label>
+
+    <br><br>
+
+    <div id="imageUpload" style="display: none;">
+        <label>Upload Image:</label>
+        <input type="file" name="image" accept="image/*">
+    </div>
+
+    <div id="videoUpload" style="display: none;">
+        <label>Upload Video:</label>
+        <input type="file" name="video" accept="video/*">
+    </div>
+
+    <br>
+
+    <button type="submit">Submit</button>
+</form>
+
+<script>
+    function showUpload() {
+        let isImage = document.querySelector(
+            'input[name="is_image"]:checked'
+        ).value;
+
+        let imageUpload = document.getElementById('imageUpload');
+        let videoUpload = document.getElementById('videoUpload');
+
+        if (isImage === 'True') {
+            imageUpload.style.display = 'block';
+            videoUpload.style.display = 'none';
+
+            imageUpload.querySelector('input').required = true;
+            videoUpload.querySelector('input').required = false;
+
+            videoUpload.querySelector('input').value = '';
+
+        } else {
+            imageUpload.style.display = 'none';
+            videoUpload.style.display = 'block';
+
+            videoUpload.querySelector('input').required = true;
+            imageUpload.querySelector('input').required = false;
+
+            imageUpload.querySelector('input').value = '';
+        }
+    }
+</script>
+
+</body>
+</html>
